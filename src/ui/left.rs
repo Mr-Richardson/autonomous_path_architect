@@ -5,13 +5,13 @@ use macroquad::math::vec2;
 use macroquad::prelude::screen_height;
 use macroquad::shapes::draw_rectangle;
 
-pub struct UiLeft {
+pub struct Left {
     buttons: Vec<Button>,
     color: Color,
     last_height: f32,
 }
 
-impl UiLeft {
+impl Left {
     pub fn new(button_names: Vec<String>, color: Color) -> Self {
         let mut buttons = Vec::new();
         for (i, name) in button_names.iter().enumerate() {
@@ -36,7 +36,7 @@ impl UiLeft {
                 false,
             ));
         }
-        UiLeft {
+        Left {
             buttons,
             color,
             last_height: screen_height(),
