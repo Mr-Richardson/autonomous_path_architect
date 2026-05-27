@@ -29,7 +29,7 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 [[package]]
 name = "button_lib"
 version = "0.1.0"
-source = "git+https://github.com/Mr-Richardson/macroquad_button_lib#1c81bab1d88596c429f716aeb03baea6d522c329"
+source = "git+https://github.com/Mr-Richardson/macroquad_button_lib#57078eea7101dd780bb4928014c642e5e7ae88aa"
 dependencies = [
  "macroquad",
  "text_lib",
@@ -256,7 +256,7 @@ checksum = "703d5c7ef118737c72f1af64ad2f6f8c5e1921f818cdcb97b8fe6fc69bf66214"
 [[package]]
 name = "text_lib"
 version = "0.1.0"
-source = "git+https://github.com/Mr-Richardson/macroquad_text_lib#779edfb78ce1943f06cab09db7b9e8b5762a4493"
+source = "git+https://github.com/Mr-Richardson/macroquad_text_lib#3579d953a24af66927720e174ee1481ebf0be392"
 dependencies = [
  "macroquad",
 ]
