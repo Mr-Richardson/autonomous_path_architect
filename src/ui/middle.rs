@@ -19,7 +19,6 @@ impl Middle {
     }
 
     pub fn render(&self) {
-        if self.last_height != screen_height() {
             draw_texture(&self.texture, 160.0, 0.0, WHITE);
         }
     }
