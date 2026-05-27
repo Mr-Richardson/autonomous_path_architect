@@ -1,5 +1,5 @@
 [package]
-name = "path_planning_engine"
+name = "autonomous_path_architect"
 version = "0.0.1"
 edition = "2024"
 
