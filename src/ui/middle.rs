@@ -20,7 +20,7 @@ impl Middle {
     }
 
     pub fn render(&self) {
-            draw_texture(&self.texture, 160.0, 0.0, WHITE);
+        draw_texture(&self.texture, 160.0, 0.0, WHITE);
         for p in self.points.iter() {
             draw_circle(p.x, p.y, 5.0, WHITE);
             draw_circle_lines(p.x, p.y, 5.0, 2.0, BLACK);
