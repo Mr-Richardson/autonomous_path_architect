@@ -1,22 +1,16 @@
-use macroquad::color::{BLACK, Color, WHITE};
+use macroquad::color::{BLACK, WHITE};
 use macroquad::math::Vec2;
 use macroquad::prelude::draw_texture;
 use macroquad::shapes::{draw_circle, draw_circle_lines};
-use macroquad::window::screen_height;
 
 pub struct Middle {
     points: Vec<Vec2>,
     texture: macroquad::texture::Texture2D,
-    last_height: f32,
 }
 
 impl Middle {
-    pub fn new(points: Vec<Vec2>, texture: macroquad::texture::Texture2D, color: Color) -> Self {
-        Middle {
-            points,
-            texture,
-            last_height: screen_height(),
-        }
+    pub fn new(points: Vec<Vec2>, texture: macroquad::texture::Texture2D) -> Self {
+        Middle { points, texture }
     }
 
     pub fn render(&self) {
