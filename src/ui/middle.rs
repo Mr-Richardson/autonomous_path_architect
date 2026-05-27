@@ -6,7 +6,6 @@ use macroquad::window::screen_height;
 pub struct Middle {
     points: Vec<Vec2>,
     texture: macroquad::texture::Texture2D,
-    color: Color,
     last_height: f32,
 }
 
@@ -15,7 +14,6 @@ impl Middle {
         Middle {
             points,
             texture,
-            color,
             last_height: screen_height(),
         }
     }
