@@ -2,7 +2,6 @@ pub mod left;
 pub mod middle;
 pub mod right;
 
-
 pub(crate) struct Manager {
     left: left::Left,
     middle: middle::Middle,

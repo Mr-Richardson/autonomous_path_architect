@@ -1,5 +1,5 @@
-use button_lib::Button;
-use button_lib::Shape::Ellipse;
+use button_lib::button::Button;
+use button_lib::button::Shape::Ellipse;
 use macroquad::color::Color;
 use macroquad::math::vec2;
 use macroquad::prelude::screen_height;

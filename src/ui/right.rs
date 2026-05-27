@@ -12,6 +12,12 @@ impl Right {
     }
 
     pub fn render(&self) {
-        draw_rectangle(screen_width() - self.width, 0.0, screen_width(), screen_height(), self.color);
+        draw_rectangle(
+            screen_width() - self.width,
+            0.0,
+            screen_width(),
+            screen_height(),
+            self.color,
+        );
     }
 }
