@@ -9,7 +9,6 @@ pub struct Left {
     buttons: Vec<Button>,
     color: Color,
     last_height: f32,
-    font: Font,
 }
 
 impl Left {
@@ -44,7 +43,6 @@ impl Left {
         Left {
             buttons,
             color,
-            font,
             last_height: screen_height(),
         }
     }
