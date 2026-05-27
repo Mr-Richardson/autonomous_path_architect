@@ -11,6 +11,9 @@ use macroquad::window::next_frame;
 
 #[macroquad::main("Path Planning Engine")]
 async fn main() {
+    let font = load_ttf_font("JetBrainsMono-VariableFont_wght.ttf")
+        .await
+        .unwrap();
     let mut ui: Manager = Manager::new(
         Left::new(
             vec![
@@ -20,6 +23,7 @@ async fn main() {
                 "drive".to_string(),
             ],
             Color::new(0.2, 0.2, 0.2, 1.0),
+            font,
         ),
         Middle::new(
             vec![vec2(10.0, 90.0)],

@@ -2,17 +2,18 @@ use button_lib::button::Button;
 use button_lib::button::Shape::Ellipse;
 use macroquad::color::Color;
 use macroquad::math::vec2;
-use macroquad::prelude::screen_height;
+use macroquad::prelude::{Font, screen_height};
 use macroquad::shapes::draw_rectangle;
 
 pub struct Left {
     buttons: Vec<Button>,
     color: Color,
     last_height: f32,
+    font: Font,
 }
 
 impl Left {
-    pub fn new(button_names: Vec<String>, color: Color) -> Self {
+    pub fn new(button_names: Vec<String>, color: Color, font: Font) -> Self {
         let mut buttons = Vec::new();
         for (i, name) in button_names.iter().enumerate() {
             buttons.push(Button::new(
@@ -31,14 +32,19 @@ impl Left {
                     b: 1.0 - color.b,
                     a: 1.0,
                 },
-                name.to_string(),
-                0.9,
                 false,
+                button_lib::button::Text {
+                    text: name.to_string(),
+                    font: font.clone(),
+                    size: 20,
+                    color: macroquad::color::BLACK,
+                },
             ));
         }
         Left {
             buttons,
             color,
+            font,
             last_height: screen_height(),
         }
     }
