@@ -26,7 +26,7 @@ async fn main() {
             font,
         ),
         Middle::new(
-            vec![vec2(10.0, 90.0)],
+            vec![],
             load_texture("test.png").await.unwrap(),
             Color::new(0.2, 0.2, 0.2, 1.0),
         ),
