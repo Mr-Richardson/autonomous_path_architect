@@ -12,5 +12,6 @@ keywords = ["robotics", "macroquad", "tool"]
 categories = ["science::robotics", "simulation", "rendering::engine"]
 
 [dependencies]
-button_lib = { git = "https://github.com/Mr-Richardson/macroquad_button_lib" }
+button_lib = "0.1.0"
 macroquad = "0.4.15"
+text_lib = "0.1.0"
