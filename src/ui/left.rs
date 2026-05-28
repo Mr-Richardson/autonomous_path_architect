@@ -1,38 +1,23 @@
 use button_lib::button::Button;
 use button_lib::button::Shape::Ellipse;
-use button_lib::button::State::{Disabled, Hovered, Idle, Pressed};
 use macroquad::color::Color;
-use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
 use macroquad::math::vec2;
 use macroquad::prelude::{Font, screen_height};
 use macroquad::shapes::draw_rectangle;
 
-#[derive(PartialEq)]
-struct LastSize {
-    width: f32,
-    height: f32,
-    size_multi: Vec<f32>,
-}
-
-pub struct TempInfo {
-    pub resizing: bool,
-    last_size: LastSize,
-}
-
 pub struct Left {
-    pub width: f32,
-    color: Color,
     buttons: Vec<Button>,
-    pub temp_info: TempInfo,
+    color: Color,
+    last_height: f32,
 }
 
 impl Left {
-    pub fn new(button_names: Vec<String>, width: f32, color: Color, font: Font) -> Self {
+    pub fn new(button_names: Vec<String>, color: Color, font: Font) -> Self {
         let mut buttons = Vec::new();
-        for name in button_names {
+        for (i, name) in button_names.iter().enumerate() {
             buttons.push(Button::new(
-                vec2(0.0, 0.0),
-                vec2(0.0, 0.0),
+                vec2(screen_height() / button_names.len() as f32 / 2.0, screen_height() / button_names.len() as f32 * (0.5 + i as f32)),
+                vec2(screen_height() / button_names.len() as f32 * 0.8, screen_height() / button_names.len() as f32 * 0.8),
                 Ellipse,
                 Color {
                     r: 1.0 - color.r,
@@ -49,64 +34,25 @@ impl Left {
                 },
             ));
         }
-        let mut left = Left {
+        Left {
             buttons,
-            width,
             color,
-            temp_info: TempInfo {
-                resizing: false,
-                last_size: LastSize {
-                    width: 0.0,
-                    height: 0.0,
-                    size_multi: Vec::new(),
-                },
-            },
-        };
-        left.update();
-        left
+            last_height: screen_height(),
+        }
     }
 
     pub fn render(&mut self) {
-        self.update();
-        draw_rectangle(0.0, 0.0, self.width, screen_height(), self.color);
+        if self.last_height != screen_height() {
+            self.last_height = screen_height();
+            let number_buttons: f32 = self.buttons.len() as f32;
+            for (i, b) in self.buttons.iter_mut().enumerate() {
+                b.set_pos(vec2(screen_height() / number_buttons / 2.0, screen_height() / number_buttons * (0.5 + i as f32)));
+                b.set_size(vec2(screen_height() / number_buttons * 0.8, screen_height() / number_buttons * 0.8));
+            }
+        }
+        draw_rectangle(0.0, 0.0, screen_height() / self.buttons.len() as f32, screen_height(), self.color);
         for b in &self.buttons {
             b.render()
-        }
-    }
-
-    fn update(&mut self) {
-        let new_size: LastSize = LastSize {
-            width: self.width,
-            height: screen_height(),
-            size_multi: self
-                .buttons
-                .iter_mut()
-                .map(|b| match b.get_state() {
-                    Idle => 1.5,
-                    Pressed => 1.75,
-                    Hovered => 1.8,
-                    Disabled => 0.0,
-                })
-                .collect(),
-        };
-        if self.temp_info.last_size != new_size {
-            let pos_y = self.width.min(screen_height() / (self.buttons.len()) as f32) / 2.0;
-            for (i, b) in self.buttons.iter_mut().enumerate() {
-                b.set_pos(vec2(self.width / 2.0, pos_y * (i as f32 + 0.5) * 2.0));
-                b.set_size(vec2(pos_y * new_size.size_multi[i], pos_y * new_size.size_multi[i]));
-            }
-            self.temp_info.last_size = new_size
-        }
-    }
-
-    pub fn resize_check(&mut self, tolerance: f32) {
-        if (mouse_position().0 - self.width).abs() <= tolerance && is_mouse_button_pressed(macroquad::input::MouseButton::Left) {
-            self.width = mouse_position().0;
-            self.temp_info.resizing = true;
-        } else if self.temp_info.resizing && is_mouse_button_down(macroquad::input::MouseButton::Left) {
-            self.width = mouse_position().0
-        } else {
-            self.temp_info.resizing = false
         }
     }
 }

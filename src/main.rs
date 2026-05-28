@@ -22,16 +22,7 @@ async fn main() {
     };
 
     let mut ui: Manager = Manager::new(
-        Left::new(
-            vec![
-                "straight".to_string(),
-                "turn".to_string(),
-                "arc".to_string(),
-                "drive".to_string(),
-            ],
-            Color::new(0.2, 0.2, 0.2, 1.0),
-            font,
-        ),
+        Left::new(vec!["straight".to_string(), "turn".to_string(), "arc".to_string(), "drive".to_string()], Color::new(0.2, 0.2, 0.2, 1.0), font),
         Middle::new(vec![], load_texture_safe("assets/textures/field.png").await),
         Right::new(Color::new(0.2, 0.2, 0.2, 1.0), 300.0),
     );
