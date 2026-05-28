@@ -10,11 +10,7 @@ pub(crate) struct Manager {
 
 impl Manager {
     pub(crate) fn new(left: left::Left, middle: middle::Middle, right: right::Right) -> Self {
-        Manager {
-            left,
-            middle,
-            right,
-        }
+        Manager { left, middle, right }
     }
 
     pub(crate) fn render(&mut self) {
