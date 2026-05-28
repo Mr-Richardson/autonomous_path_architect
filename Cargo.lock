@@ -26,6 +26,7 @@ version = "0.0.1"
 dependencies = [
  "button_lib",
  "macroquad",
+ "text_lib",
 ]
 
 [[package]]
@@ -37,7 +38,8 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 [[package]]
 name = "button_lib"
 version = "0.1.0"
-source = "git+https://github.com/Mr-Richardson/macroquad_button_lib#57078eea7101dd780bb4928014c642e5e7ae88aa"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0676a80e3d728d8127c1836f062d08eaa3db966b40a490dcde8ba78f8c6cbc2"
 dependencies = [
  "macroquad",
  "text_lib",
@@ -256,7 +258,8 @@ checksum = "703d5c7ef118737c72f1af64ad2f6f8c5e1921f818cdcb97b8fe6fc69bf66214"
 [[package]]
 name = "text_lib"
 version = "0.1.0"
-source = "git+https://github.com/Mr-Richardson/macroquad_text_lib#3579d953a24af66927720e174ee1481ebf0be392"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1ea6fac9fec6ee0cce18efc6aa4807185124a0a72c4c1df1a28e4e149743d42"
 dependencies = [
  "macroquad",
 ]
