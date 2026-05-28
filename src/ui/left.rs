@@ -16,14 +16,8 @@ impl Left {
         let mut buttons = Vec::new();
         for (i, name) in button_names.iter().enumerate() {
             buttons.push(Button::new(
-                vec2(
-                    screen_height() / button_names.len() as f32 / 2.0,
-                    screen_height() / button_names.len() as f32 * (0.5 + i as f32),
-                ),
-                vec2(
-                    screen_height() / button_names.len() as f32 * 0.8,
-                    screen_height() / button_names.len() as f32 * 0.8,
-                ),
+                vec2(screen_height() / button_names.len() as f32 / 2.0, screen_height() / button_names.len() as f32 * (0.5 + i as f32)),
+                vec2(screen_height() / button_names.len() as f32 * 0.8, screen_height() / button_names.len() as f32 * 0.8),
                 Ellipse,
                 Color {
                     r: 1.0 - color.r,
@@ -52,24 +46,11 @@ impl Left {
             self.last_height = screen_height();
             let number_buttons: f32 = self.buttons.len() as f32;
             for (i, b) in self.buttons.iter_mut().enumerate() {
-                b.set_pos(vec2(
-                    screen_height() / number_buttons / 2.0,
-                    screen_height() / number_buttons * (0.5 + i as f32),
-                ));
-                b.set_size(vec2(
-                    screen_height() / number_buttons * 0.8,
-                    screen_height() / number_buttons * 0.8,
-                ));
-                println!("Updated button");
+                b.set_pos(vec2(screen_height() / number_buttons / 2.0, screen_height() / number_buttons * (0.5 + i as f32)));
+                b.set_size(vec2(screen_height() / number_buttons * 0.8, screen_height() / number_buttons * 0.8));
             }
         }
-        draw_rectangle(
-            0.0,
-            0.0,
-            screen_height() / self.buttons.len() as f32,
-            screen_height(),
-            self.color,
-        );
+        draw_rectangle(0.0, 0.0, screen_height() / self.buttons.len() as f32, screen_height(), self.color);
         for b in &self.buttons {
             b.render()
         }
