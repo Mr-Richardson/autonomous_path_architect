@@ -1,3 +1,4 @@
 target/
 .idea/
 autonomous_path_architect.iml
+.vscode/
