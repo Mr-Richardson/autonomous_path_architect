@@ -1,11 +1,13 @@
-use macroquad::prelude::Image;
-use macroquad::texture::{FilterMode, Texture2D};
+use macroquad::{
+    prelude::load_texture,
+    texture::{FilterMode, Texture2D},
+};
 
-pub fn load_texture_safe(bytes: &[u8]) -> Texture2D {
-    match Image::from_file_with_format(bytes, None) {
-        Ok(loaded_image) => Texture2D::from_image(&loaded_image),
+pub async fn load_texture_safe(path: &str) -> Texture2D {
+    match load_texture(path).await {
+        Ok(loaded_texture) => loaded_texture,
         Err(e) => {
-            eprintln!("texture failed to load: {} Continue with error texture.", e);
+            eprintln!("texture {} failed to load: {} Continue with error texture.", path, e);
             let magenta = [255, 0, 255, 255];
             let black = [0, 0, 0, 255];
             let mut pixels = Vec::new();
