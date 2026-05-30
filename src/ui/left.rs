@@ -90,6 +90,8 @@ impl Left {
         }
     }
 
+    pub fn resize_check(&mut self, tolerance: f32) {}
+
     pub fn set_width(&mut self, width: f32) {
         self.width = width.min(screen_height() / self.buttons.len() as f32);
         self.update();
