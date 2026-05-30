@@ -9,9 +9,18 @@ use crate::ui::right::Right;
 use macroquad::color::Color;
 use macroquad::prelude::load_ttf_font;
 use macroquad::text::get_default_font;
-use macroquad::window::next_frame;
+use macroquad::window::{Conf, next_frame};
 
-#[macroquad::main("Path Planning Engine")]
+fn window_conf() -> Conf {
+    Conf {
+        window_title: "Autonomous Path Architect".to_string(),
+        fullscreen: false,
+        sample_count: 4,
+        ..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf)]
 async fn main() {
     let font = match load_ttf_font("assets/font/Lexend-VariableFont_wght.ttf").await {
         Ok(loaded_font) => loaded_font,
@@ -22,11 +31,12 @@ async fn main() {
     };
 
     let mut ui: Manager = Manager::new(
-        Left::new(vec!["straight".to_string(), "turn".to_string(), "arc".to_string(), "drive".to_string()], Color::new(0.2, 0.2, 0.2, 1.0), font),
+        Left::new(vec!["straight".to_string(), "turn".to_string(), "arc".to_string(), "drive".to_string()], 150.0, Color::new(0.1, 0.1, 0.1, 1.0), font),
         Middle::new(vec![], load_texture_safe("assets/textures/field.png").await),
-        Right::new(Color::new(0.2, 0.2, 0.2, 1.0), 300.0),
+        Right::new(Color::new(0.1, 0.1, 0.1, 1.0), 300.0),
     );
     loop {
+        ui.resize_check(5.0);
         ui.render();
         next_frame().await;
     }
