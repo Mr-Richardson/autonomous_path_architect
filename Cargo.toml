@@ -4,7 +4,7 @@ version = "0.0.1"
 edition = "2024"
 authors = ["Mr Richardson"]
 description = "Easily construct your robots drive-path in the digital world."
-documentation = "https://docs.rs/autonomous_path_architect" # TODO verify
+documentation = "https://docs.rs/autonomous_path_architect"                   # TODO verify
 readme = "README.md"
 license = "GNU General Public License v3.0"
 repository = "https://github.com/Mr-Richardson/autonomous_path_architect"
@@ -14,4 +14,5 @@ categories = ["science::robotics", "simulation", "rendering::engine"]
 [dependencies]
 button_lib = "0.1.0"
 macroquad = "0.4.15"
+miniquad = "0.4.10"
 text_lib = "0.1.0"

@@ -26,6 +26,7 @@ version = "0.0.1"
 dependencies = [
  "button_lib",
  "macroquad",
+ "miniquad",
  "text_lib",
 ]
 
