@@ -23,5 +23,6 @@ impl Manager {
 
     pub(crate) fn resize_check(&mut self, tolerance: f32) {
         self.right.resize_check(tolerance);
+        self.left.resize_check(tolerance);
     }
 }
