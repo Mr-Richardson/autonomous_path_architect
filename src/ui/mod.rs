@@ -3,6 +3,8 @@ use macroquad::color::Color;
 use macroquad::input::{is_key_pressed, mouse_position};
 use macroquad::prelude::{get_default_font, load_ttf_font_from_bytes};
 use macroquad::window::screen_width;
+use miniquad::window::set_fullscreen;
+use miniquad::KeyCode::F11;
 
 const FONT_DATA: &[u8] = include_bytes!("../../assets/font/Lexend-VariableFont_wght.ttf");
 const FIELD_TEXTURE_BYTES: &[u8] = include_bytes!("../../assets/textures/field.png");
@@ -11,10 +13,15 @@ pub mod left;
 pub mod middle;
 pub mod right;
 
+struct TempInfo {
+    is_fullscreen: bool,
+}
 pub(crate) struct Manager {
     left: left::Left,
     middle: middle::Middle,
     right: right::Right,
+    cursor: crate::set_mouse_cursor::MouseCursor,
+    temp_info: TempInfo,
 }
 
 impl Manager {
@@ -41,5 +48,14 @@ impl Manager {
     pub(crate) fn resize_check(&mut self, tolerance: f32) {
         self.right.resize_check(tolerance);
         self.left.resize_check(tolerance);
+        if is_key_pressed(F11) {
+            if self.temp_info.is_fullscreen {
+                set_fullscreen(false);
+                self.temp_info.is_fullscreen = false
+            } else {
+                set_fullscreen(true);
+                self.temp_info.is_fullscreen = true
+            }
+        }
     }
 }
