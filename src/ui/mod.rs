@@ -46,8 +46,14 @@ impl Manager {
     }
 
     pub(crate) fn resize_check(&mut self, tolerance: f32) {
-        self.right.resize_check(tolerance);
+        if (mouse_position().0 - self.left.width).abs() <= tolerance || (mouse_position().0 - screen_width() + self.right.width).abs() <= tolerance {
+            self.cursor.set(miniquad::CursorIcon::EWResize);
+        } else if !self.left.temp_info.resizing && !self.right.temp_info.resizing {
+            self.cursor.set(miniquad::CursorIcon::Default);
+        }
+
         self.left.resize_check(tolerance);
+        self.right.resize_check(tolerance);
         if is_key_pressed(F11) {
             if self.temp_info.is_fullscreen {
                 set_fullscreen(false);
