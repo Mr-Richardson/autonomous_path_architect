@@ -3,8 +3,8 @@ use macroquad::color::Color;
 use macroquad::input::{is_key_pressed, mouse_position};
 use macroquad::prelude::{get_default_font, load_ttf_font_from_bytes};
 use macroquad::window::screen_width;
-use miniquad::window::set_fullscreen;
 use miniquad::KeyCode::F11;
+use miniquad::window::set_fullscreen;
 
 const FONT_DATA: &[u8] = include_bytes!("../../assets/font/Lexend-VariableFont_wght.ttf");
 const FIELD_TEXTURE_BYTES: &[u8] = include_bytes!("../../assets/textures/field.png");
