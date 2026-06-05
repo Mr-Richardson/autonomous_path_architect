@@ -2,6 +2,7 @@ use button_lib::button::Button;
 use button_lib::button::Shape::Ellipse;
 use button_lib::button::State::{Disabled, Hovered, Idle, Pressed};
 use macroquad::color::Color;
+use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
 use macroquad::math::vec2;
 use macroquad::prelude::{Font, screen_height};
 use macroquad::shapes::draw_rectangle;
@@ -13,11 +14,16 @@ struct LastSize {
     size_multi: Vec<f32>,
 }
 
+pub struct TempInfo {
+    pub resizing: bool,
+    last_size: LastSize,
+}
+
 pub struct Left {
-    buttons: Vec<Button>,
     pub width: f32,
     color: Color,
-    last_size: LastSize,
+    buttons: Vec<Button>,
+    pub temp_info: TempInfo,
 }
 
 impl Left {
@@ -47,10 +53,13 @@ impl Left {
             buttons,
             width,
             color,
-            last_size: LastSize {
-                width: 0.0,
-                height: 0.0,
-                size_multi: Vec::new(),
+            temp_info: TempInfo {
+                resizing: false,
+                last_size: LastSize {
+                    width: 0.0,
+                    height: 0.0,
+                    size_multi: Vec::new(),
+                },
             },
         };
         left.update();
@@ -80,20 +89,24 @@ impl Left {
                 })
                 .collect(),
         };
-        if self.last_size != new_size {
-            let pos_y = (self.width).min(screen_height() / (self.buttons.len()) as f32) / 2.0;
+        if self.temp_info.last_size != new_size {
+            let pos_y = self.width.min(screen_height() / (self.buttons.len()) as f32) / 2.0;
             for (i, b) in self.buttons.iter_mut().enumerate() {
                 b.set_pos(vec2(self.width / 2.0, pos_y * (i as f32 + 0.5) * 2.0));
                 b.set_size(vec2(pos_y * new_size.size_multi[i], pos_y * new_size.size_multi[i]));
             }
-            self.last_size = new_size
+            self.temp_info.last_size = new_size
         }
     }
 
-    pub fn resize_check(&mut self, tolerance: f32) {}
-
-    pub fn set_width(&mut self, width: f32) {
-        self.width = width.min(screen_height() / self.buttons.len() as f32);
-        self.update();
+    pub fn resize_check(&mut self, tolerance: f32) {
+        if (mouse_position().0 - self.width).abs() <= tolerance && is_mouse_button_pressed(macroquad::input::MouseButton::Left) {
+            self.width = mouse_position().0;
+            self.temp_info.resizing = true;
+        } else if self.temp_info.resizing && is_mouse_button_down(macroquad::input::MouseButton::Left) {
+            self.width = mouse_position().0
+        } else {
+            self.temp_info.resizing = false
+        }
     }
 }
