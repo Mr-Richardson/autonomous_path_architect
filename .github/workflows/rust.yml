@@ -45,12 +45,11 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}
 
-      - name: Rebase and Push to Main
+      - name: rebase
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git checkout dev
-          git pull --rebase origin main || { echo "Rebase failed due to conflicts. Fix locally."; exit 1; }
+          git checkout -b dev origin/dev
+          git pull --rebase origin main
           git push origin dev:main --force-with-lease
