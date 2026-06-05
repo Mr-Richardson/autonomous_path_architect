@@ -1,15 +1,14 @@
 use macroquad::color::Color;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
 use macroquad::prelude::{draw_rectangle, screen_height, screen_width};
-use miniquad::window::set_mouse_cursor;
 
-struct TempInfo {
-    resizing: bool,
+pub struct TempInfo {
+    pub resizing: bool,
 }
 pub struct Right {
-    color: Color,
     pub width: f32,
-    temp_info: TempInfo,
+    color: Color,
+    pub temp_info: TempInfo,
 }
 
 impl Right {
@@ -26,14 +25,13 @@ impl Right {
     }
 
     pub fn resize_check(&mut self, tolerance: f32) {
-        if ((mouse_position().0 - screen_width() + self.width).abs() <= tolerance && is_mouse_button_pressed(macroquad::input::MouseButton::Left)) {
+        if (mouse_position().0 - screen_width() + self.width).abs() <= tolerance && is_mouse_button_pressed(macroquad::input::MouseButton::Left) {
             self.width = screen_width() - mouse_position().0;
             self.temp_info.resizing = true;
-        } else if self.temp_info.resizing == true && is_mouse_button_down(macroquad::input::MouseButton::Left) {
+        } else if self.temp_info.resizing && is_mouse_button_down(macroquad::input::MouseButton::Left) {
             self.width = screen_width() - mouse_position().0
         } else {
             self.temp_info.resizing = false
         }
-        set_mouse_cursor(miniquad::CursorIcon::EWResize)
     }
 }
