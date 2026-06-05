@@ -4,7 +4,7 @@ mod ui;
 
 use crate::ui::Manager;
 use macroquad::color::Color;
-use macroquad::window::{next_frame, Conf};
+use macroquad::window::{Conf, next_frame};
 
 fn window_conf() -> Conf {
     Conf {
