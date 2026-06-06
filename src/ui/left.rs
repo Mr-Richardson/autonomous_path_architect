@@ -4,7 +4,7 @@ use button_lib::button::State::{Disabled, Hovered, Idle, Pressed};
 use macroquad::color::Color;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
 use macroquad::math::vec2;
-use macroquad::prelude::{screen_height, Font};
+use macroquad::prelude::{Font, screen_height};
 use macroquad::shapes::draw_rectangle;
 
 #[derive(PartialEq)]
@@ -90,30 +90,20 @@ impl Left {
                 .collect(),
         };
         if self.temp_info.last_size != new_size {
-            let pos_y = self
-                .width
-                .min(screen_height() / (self.buttons.len()) as f32)
-                / 2.0;
+            let pos_y = self.width.min(screen_height() / (self.buttons.len()) as f32) / 2.0;
             for (i, b) in self.buttons.iter_mut().enumerate() {
                 b.set_pos(vec2(self.width / 2.0, pos_y * (i as f32 + 0.5) * 2.0));
-                b.set_size(vec2(
-                    pos_y * new_size.size_multi[i],
-                    pos_y * new_size.size_multi[i],
-                ));
+                b.set_size(vec2(pos_y * new_size.size_multi[i], pos_y * new_size.size_multi[i]));
             }
             self.temp_info.last_size = new_size
         }
     }
 
     pub fn resize_check(&mut self, tolerance: f32) {
-        if (mouse_position().0 - self.width).abs() <= tolerance
-            && is_mouse_button_pressed(macroquad::input::MouseButton::Left)
-        {
+        if (mouse_position().0 - self.width).abs() <= tolerance && is_mouse_button_pressed(macroquad::input::MouseButton::Left) {
             self.width = mouse_position().0;
             self.temp_info.resizing = true;
-        } else if self.temp_info.resizing
-            && is_mouse_button_down(macroquad::input::MouseButton::Left)
-        {
+        } else if self.temp_info.resizing && is_mouse_button_down(macroquad::input::MouseButton::Left) {
             self.width = mouse_position().0
         } else {
             self.temp_info.resizing = false

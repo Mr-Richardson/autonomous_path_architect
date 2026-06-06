@@ -3,7 +3,7 @@ pub mod utils;
 
 use crate::ui::Manager;
 use macroquad::color::Color;
-use macroquad::window::{clear_background, next_frame, Conf};
+use macroquad::window::{Conf, clear_background, next_frame};
 
 fn window_conf() -> Conf {
     Conf {
