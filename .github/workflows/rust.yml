@@ -100,10 +100,10 @@ jobs:
           - os: windows-latest
             target: windows
             artifact_name: autonomous_path_architect.exe
-          - os: macos-latest
+          - os: macos-26
             target: macos
             artifact_name: autonomous_path_architect
-          - os: macos-13
+          - os: macos-26-intel
             target: macos-intel
             artifact_name: autonomous_path_architect
     runs-on: ${{ matrix.os }}
