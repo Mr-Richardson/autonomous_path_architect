@@ -1,11 +1,12 @@
-name: Test & Auto-Rebase
+name: Test & Deploy
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main" ]
+    tags: [ 'v*' ]
 
 concurrency:
-  group: ci-cd-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -38,21 +39,132 @@ jobs:
       - name: Functionality Test
         run: cargo test --all-targets --all-features
 
-  deploy-to-main:
+  build_web:
     needs: validate
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Release
+        env:
+          RUSTFLAGS: "-C link-arg=--import-undefined"
+        run: cargo build --target wasm32-unknown-unknown --release
+
+      - name: Prepare Deployment Directory
+        run: |
+          mkdir -p dist
+          cp index.html dist/
+          cp target/wasm32-unknown-unknown/release/autonomous_path_architect.wasm dist/
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist
+
+  build_linux:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Release
+        run: cargo build --release
+
+  build_windows:
+    needs: validate
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Release
+        run: cargo build --release
+
+  build_macos:
+    needs: validate
+    runs-on: macos-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Release
+        run: cargo build --release
+
+  deploy_pages:
+    needs: build_web
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  deploy_releases:
+    needs: [ build_linux, build_windows, build_macos ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v6
 
-      - name: Rebase and Push to Main
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git checkout dev
-          git pull --rebase origin main || { echo "Rebase failed due to conflicts. Fix locally."; exit 1; }
-          git push origin dev:main --force-with-lease
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Release v${{ github.run_number }}
+          body: "Automated release from GitHub Actions"
+
+      - name: Upload Linux Artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/autonomous_path_architect
+
+      - name: Upload Windows Artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/autonomous_path_architect.exe
+
+      - name: Upload macOS Artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/autonomous_path_architect
