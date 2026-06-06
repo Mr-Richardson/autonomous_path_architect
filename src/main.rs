@@ -1,6 +1,5 @@
-mod load_texture_safe;
-pub mod set_mouse_cursor;
 mod ui;
+pub mod utils;
 
 use crate::ui::Manager;
 use macroquad::color::Color;
