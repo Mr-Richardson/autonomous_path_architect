@@ -1,6 +1,6 @@
 [package]
 name = "autonomous_path_architect"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2024"
 authors = ["Mr Richardson"]
 description = "Easily construct your robots drive-path in the digital world."
