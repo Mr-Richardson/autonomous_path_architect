@@ -1,9 +1,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod ui;
+mod rendering;
 pub mod utils;
 
-use crate::ui::Manager;
+use crate::rendering::Manager;
 use macroquad::color::Color;
 use macroquad::window::{clear_background, next_frame, Conf};
 
