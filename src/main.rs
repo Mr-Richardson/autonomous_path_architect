@@ -1,9 +1,11 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 mod ui;
 pub mod utils;
 
 use crate::ui::Manager;
 use macroquad::color::Color;
-use macroquad::window::{Conf, clear_background, next_frame};
+use macroquad::window::{clear_background, next_frame, Conf};
 
 fn window_conf() -> Conf {
     Conf {
@@ -17,7 +19,7 @@ fn window_conf() -> Conf {
 #[macroquad::main(window_conf)]
 async fn main() {
     let mut ui: Manager = Manager::new(vec!["straight".to_string(), "arc".to_string(), "until black".to_string()], Color::new(0.1, 0.1, 0.1, 1.0));
-
+    println!("Program started");
     loop {
         clear_background(macroquad::color::BLACK);
         ui.resize_check(4.0);
