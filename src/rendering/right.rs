@@ -1,21 +1,30 @@
 use macroquad::color::Color;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
+use macroquad::math::{Vec2, vec2};
 use macroquad::prelude::{draw_rectangle, screen_height, screen_width};
 
 pub struct TempInfo {
     pub resizing: bool,
 }
+
+struct Settings {
+    robot_size: Vec2,
+}
+
 pub struct Right {
     pub width: f32,
     color: Color,
+    pub(crate) settings: Settings,
     pub temp_info: TempInfo,
 }
 
 impl Right {
+    // TODO: use this UI for the settings
     pub(crate) fn new(color: Color, width: f32) -> Self {
         Right {
             color,
             width,
+            settings: Settings { robot_size: vec2(174.0, 160.0) },
             temp_info: TempInfo { resizing: false },
         }
     }
