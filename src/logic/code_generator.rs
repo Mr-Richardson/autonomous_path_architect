@@ -12,7 +12,11 @@ pub fn generate(points: &[Vec2]) -> Result<String, String> {
     for i in 0..points.len() - 2 {
         let distance = points[i].distance(points[i + 1]);
         let angle = (points[i + 1] - points[i]).angle_between(points[i + 2] - points[i + 1]).to_degrees();
-        write!(code, "    await drive.straight_and_turn({:.2}, {:.2})\n", distance, angle).expect(error_message);
+        if angle.is_nan() {
+            write!(code, "    await drive.straight({:.2})\n", distance).expect(error_message);
+        } else {
+            write!(code, "    await drive.straight_and_turn({:.2}, {:.2})\n", distance, angle).expect(error_message);
+        }
     }
     let distance = points[points.len() - 2].distance(*points.last().unwrap());
     write!(code, "    await drive.straight({:.2})\n\nrun_task(template())\n", distance).expect(error_message);
@@ -26,7 +30,7 @@ mod tests {
     #[test]
     fn test_code_generation() {
         let points2: Vec<Vec2> = vec![vec2(10.0, 10.0), vec2(10.0, 50.5)];
-        let points3: Vec<Vec2> = vec![vec2(10.0, 10.0), vec2(10.0, 10.0), vec2(150.0, 150.0)]; // FIXME: fix NaN problem
+        let points3: Vec<Vec2> = vec![vec2(10.0, 10.0), vec2(10.0, 10.0), vec2(150.0, 150.0)];
         let points5: Vec<Vec2> = vec![vec2(10.0, 10.0), vec2(100.0, 500.0), vec2(150.0, 150.0), vec2(250.0, 250.0), vec2(30.0, 30.0)];
         let result2: String = "from library import *\n\nasync def main():\n    await drive.turn(90.00)\n    await drive.straight(40.50)\n\nrun_task(template())\n".to_string();
         let result3: String = "from library import *\n\nasync def main():\n    await drive.turn(0.00)\n    await drive.straight_and_turn(0.00, -161.46)\n    await drive.straight(353.55)\n\nrun_task(template())\n".to_string();
