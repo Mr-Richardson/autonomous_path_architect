@@ -1,8 +1,8 @@
 use macroquad::math::Vec2;
 use std::fmt::Write;
 
+/// Convert the coordinates of the points on the field in mm to Python code
 pub fn generate(points: &[Vec2]) -> Result<String, String> {
-    // Convert the coordinates of the points in mm to Python code
     if points.len() < 2 {
         return Err("Not enough points to generate code (need at least 2).".to_string());
     }
