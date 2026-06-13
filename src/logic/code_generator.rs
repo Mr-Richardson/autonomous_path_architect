@@ -27,7 +27,7 @@ pub fn generate(points: &[Vec2]) -> Result<String, String> {
 mod tests {
     use super::*;
     use macroquad::prelude::vec2;
-    #[test]
+    #[test] // TODO: better tests
     fn test_code_generation() {
         let points2: Vec<Vec2> = vec![vec2(10.0, 10.0), vec2(10.0, 50.5)];
         let points3: Vec<Vec2> = vec![vec2(10.0, 10.0), vec2(10.0, 10.0), vec2(150.0, 150.0)];
