@@ -1,5 +1,5 @@
 use button_lib::button::Button;
-use button_lib::button::Shape::Ellipse;
+use button_lib::button::Shape::{Ellipse, Rectangle};
 use button_lib::button::State::{Disabled, Hovered, Idle, Pressed};
 use macroquad::color::Color;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
@@ -49,6 +49,19 @@ impl Left {
                 },
             ));
         }
+        buttons.push(Button::new(
+            vec2(0.0, 0.0),
+            vec2(0.0, 0.0),
+            Rectangle,
+            Color { r: 0.0, g: 1.0, b: 0.0, a: 1.0 },
+            false,
+            button_lib::button::Text {
+                text: "copy code".to_string(),
+                font: font.clone(),
+                size: 20,
+                color: macroquad::color::WHITE,
+            },
+        ));
         let mut left = Left {
             buttons,
             width,
@@ -83,8 +96,8 @@ impl Left {
                 .iter_mut()
                 .map(|b| match b.get_state() {
                     Idle => 1.5,
-                    Pressed => 1.75,
-                    Hovered => 1.8,
+                    Pressed => 1.45,
+                    Hovered => 1.5,
                     Disabled => 0.0,
                 })
                 .collect(),
@@ -108,5 +121,9 @@ impl Left {
         } else {
             self.temp_info.resizing = false
         }
+    }
+
+    pub(crate) fn is_copy_code(&mut self) -> bool {
+        if let Some(button) = self.buttons.last_mut() { button.get_state() == Pressed } else { false }
     }
 }
