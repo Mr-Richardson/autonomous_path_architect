@@ -5,7 +5,7 @@ use macroquad::texture::{DrawTextureParams, draw_texture_ex};
 use macroquad::window::screen_height;
 
 pub struct Middle {
-    points: Vec<Vec2>,
+    pub(crate) points: Vec<Vec2>,
     texture: macroquad::texture::Texture2D,
 }
 
