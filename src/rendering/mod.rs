@@ -15,10 +15,11 @@ pub mod right;
 
 struct TempInfo {
     is_fullscreen: bool,
+    last_is_copy_code: bool,
 }
 pub(crate) struct Manager {
     left: left::Left,
-    middle: middle::Middle,
+    pub(crate) middle: middle::Middle,
     right: right::Right,
     cursor: crate::utils::set_mouse_cursor::MouseCursor,
     temp_info: TempInfo,
@@ -35,7 +36,10 @@ impl Manager {
             middle: middle::Middle::new(vec![], load_texture_safe(FIELD_TEXTURE_BYTES)),
             right: right::Right::new(color, 300.0),
             cursor: crate::utils::set_mouse_cursor::MouseCursor { state: miniquad::CursorIcon::Default },
-            temp_info: TempInfo { is_fullscreen: false },
+            temp_info: TempInfo {
+                is_fullscreen: false,
+                last_is_copy_code: false,
+            },
         }
     }
 
@@ -62,6 +66,19 @@ impl Manager {
                 set_fullscreen(true);
                 self.temp_info.is_fullscreen = true
             }
+        }
+    }
+
+    pub(crate) fn is_copy_code(&mut self) -> bool {
+        let copy = self.left.is_copy_code();
+        if copy && !self.temp_info.last_is_copy_code {
+            self.temp_info.last_is_copy_code = true;
+            true
+        } else {
+            if !copy && self.temp_info.last_is_copy_code {
+                self.temp_info.last_is_copy_code = false;
+            }
+            false
         }
     }
 }

@@ -4,7 +4,6 @@ mod logic;
 mod rendering;
 pub mod utils;
 
-use crate::rendering::Manager;
 use macroquad::color::Color;
 use macroquad::window::{Conf, clear_background, next_frame};
 
@@ -19,12 +18,15 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
-    let mut ui: Manager = Manager::new(vec!["straight".to_string(), "arc".to_string(), "until black".to_string()], Color::new(0.1, 0.1, 0.1, 1.0));
-    println!("Program started");
+    let mut rendering: rendering::Manager = rendering::Manager::new(vec!["straight".to_string(), "arc".to_string(), "until black".to_string()], Color::new(0.1, 0.1, 0.1, 1.0));
+    let logic: logic::Manager = logic::Manager::new();
     loop {
         clear_background(macroquad::color::BLACK);
-        ui.resize_check(4.0);
-        ui.render();
+        rendering.resize_check(4.0);
+        rendering.render();
+        if rendering.is_copy_code(){
+            logic.copy_code(&rendering.middle.points); // TODO: finish
+        }
         next_frame().await;
     }
 }
