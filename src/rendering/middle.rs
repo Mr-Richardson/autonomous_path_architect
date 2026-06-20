@@ -15,7 +15,7 @@ impl Middle {
     }
 
     pub fn render(&self, x_start: f32, x_end: f32) {
-        let x = self.texture.height() / self.texture.width();
+        let x = (self.texture.height() / self.texture.width()).min(self.texture.width() / self.texture.height()); // TODO: verify
         let h = (screen_height() - (x_end - x_start) * x) / 2.0;
         draw_texture_ex(
             &self.texture,
