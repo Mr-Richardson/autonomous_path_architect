@@ -1,20 +1,19 @@
 use macroquad::color::{BLACK, WHITE};
-use macroquad::math::{Vec2, vec2};
+use macroquad::math::{vec2, Vec2};
 use macroquad::shapes::{draw_circle, draw_circle_lines};
-use macroquad::texture::{DrawTextureParams, draw_texture_ex};
+use macroquad::texture::{draw_texture_ex, DrawTextureParams};
 use macroquad::window::screen_height;
 
 pub struct Middle {
-    pub(crate) points: Vec<Vec2>,
     texture: macroquad::texture::Texture2D,
 }
 
 impl Middle {
-    pub fn new(points: Vec<Vec2>, texture: macroquad::texture::Texture2D) -> Self {
-        Middle { points, texture }
+    pub fn new(texture: macroquad::texture::Texture2D) -> Self {
+        Middle { texture }
     }
 
-    pub fn render(&self, x_start: f32, x_end: f32) {
+    pub fn render(&self, x_start: f32, x_end: f32, points: &[Vec2]) {
         let x = (self.texture.height() / self.texture.width()).min(self.texture.width() / self.texture.height()); // TODO: verify
         let h = (screen_height() - (x_end - x_start) * x) / 2.0;
         draw_texture_ex(
@@ -31,7 +30,7 @@ impl Middle {
                 pivot: None,
             },
         );
-        for p in self.points.iter() {
+        for p in points.iter() {
             draw_circle(p.x + x_start, p.y, 5.0, WHITE);
             draw_circle_lines(p.x + x_start, p.y, 5.0, 2.0, BLACK);
         }

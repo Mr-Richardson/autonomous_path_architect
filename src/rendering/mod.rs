@@ -1,10 +1,11 @@
 use crate::utils::load_texture_safe::load_texture_safe;
 use macroquad::color::Color;
 use macroquad::input::{is_key_pressed, mouse_position};
+use macroquad::math::Vec2;
 use macroquad::prelude::{get_default_font, load_ttf_font_from_bytes};
 use macroquad::window::screen_width;
-use miniquad::KeyCode::F11;
 use miniquad::window::set_fullscreen;
+use miniquad::KeyCode::F11;
 
 const FONT_DATA: &[u8] = include_bytes!("../../assets/font/Lexend-VariableFont_wght.ttf");
 const FIELD_TEXTURE_BYTES: &[u8] = include_bytes!("../../assets/textures/field.png");
@@ -33,7 +34,7 @@ impl Manager {
         });
         Manager {
             left: left::Left::new(drive_method_names, 150.0, color, font),
-            middle: middle::Middle::new(vec![], load_texture_safe(FIELD_TEXTURE_BYTES)),
+            middle: middle::Middle::new(load_texture_safe(FIELD_TEXTURE_BYTES)),
             right: right::Right::new(color, 300.0),
             cursor: crate::utils::set_mouse_cursor::MouseCursor { state: miniquad::CursorIcon::Default },
             temp_info: TempInfo {
@@ -43,8 +44,8 @@ impl Manager {
         }
     }
 
-    pub(crate) fn render(&mut self) {
-        self.middle.render(self.left.width, screen_width() - self.right.width);
+    pub(crate) fn render(&mut self, points: &[Vec2]) {
+        self.middle.render(self.left.width, screen_width() - self.right.width, points);
         self.right.render();
         self.left.render();
     }
