@@ -40,7 +40,7 @@ impl Left {
                     b: 1.0 - color.b,
                     a: 1.0,
                 },
-                false,
+                true,
                 button_lib::button::Text {
                     text: name.to_string(),
                     font: font.clone(),
