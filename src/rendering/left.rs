@@ -1,7 +1,7 @@
 use button_lib::button::Button;
 use button_lib::button::Shape::{Ellipse, Rectangle};
 use button_lib::button::State::{Disabled, Hovered, Idle, Pressed};
-use macroquad::color::Color;
+use macroquad::color::{Color, RED, WHITE};
 use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
 use macroquad::math::vec2;
 use macroquad::prelude::{Font, screen_height};
@@ -59,7 +59,7 @@ impl Left {
                 text: "copy code".to_string(),
                 font: font.clone(),
                 size: 20,
-                color: macroquad::color::WHITE,
+                color: WHITE,
             },
         ));
         let mut left = Left {
@@ -97,16 +97,23 @@ impl Left {
                 .map(|b| match b.get_state() {
                     Idle => 1.5,
                     Pressed => 1.45,
-                    Hovered => 1.5,
+                    Hovered => 1.55,
                     Disabled => 0.0,
                 })
                 .collect(),
         };
         if self.temp_info.last_size != new_size {
-            let pos_y = self.width.min(screen_height() / (self.buttons.len()) as f32) / 2.0;
+            let pos_y = self.width.min(screen_height() / self.buttons.len() as f32) / 2.0;
             for (i, b) in self.buttons.iter_mut().enumerate() {
                 b.set_pos(vec2(self.width / 2.0, pos_y * (i as f32 + 0.5) * 2.0));
                 b.set_size(vec2(pos_y * new_size.size_multi[i], pos_y * new_size.size_multi[i]));
+                if i != new_size.size_multi.len() - 1 {
+                    if new_size.size_multi[i] == 1.45 {
+                        b.set_color(RED);
+                    } else {
+                        b.set_color(WHITE);
+                    }
+                }
             }
             self.temp_info.last_size = new_size
         }
