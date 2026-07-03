@@ -14,7 +14,7 @@ struct Settings {
 pub struct Right {
     pub width: f32,
     color: Color,
-    pub(crate) settings: Settings,
+    settings: Settings,
     pub temp_info: TempInfo,
 }
 
