@@ -13,10 +13,9 @@ pub(crate) struct Manager {
 impl Manager {
     pub(crate) fn new(field_width: f32) -> Self {
         Self { points: Vec::new(), field_width, clipboard: Clipboard::new().expect("Clipboard creation failed")}
-    }
+    } // TODO: error handling
 
     pub(crate) fn copy_code(&mut self) {
-        // TODO: finish
         let mut coordinates = Vec::with_capacity(self.points.len());
         for point in &self.points {
             coordinates.push(point.mul(self.field_width))

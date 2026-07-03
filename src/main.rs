@@ -25,7 +25,7 @@ async fn main() {
         rendering.resize_check(4.0);
         rendering.render(&logic.points);
         if rendering.is_copy_code() {
-            logic.copy_code(); // TODO: finish
+            logic.copy_code();
         }
         next_frame().await;
     }
