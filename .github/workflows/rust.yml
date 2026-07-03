@@ -3,7 +3,7 @@ name: Test, Deploy & Release
 on:
   push:
     branches: [ "main" ]
-    tags: [ 'v*' ] # TODO: replace manual tags with automatic version change detection in Cargo.toml
+    tags: [ 'v*' ] # TODO: replace manual tags with automatic version change detection in Cargo.toml with `wip detection
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
