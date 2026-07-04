@@ -1,7 +1,7 @@
-use macroquad::color::{BLACK, WHITE};
-use macroquad::math::{vec2, Vec2};
-use macroquad::shapes::{draw_circle, draw_circle_lines};
-use macroquad::texture::{draw_texture_ex, DrawTextureParams};
+use macroquad::color::{BLACK, Color, WHITE};
+use macroquad::math::{Vec2, vec2};
+use macroquad::shapes::{draw_circle, draw_circle_lines, draw_line};
+use macroquad::texture::{DrawTextureParams, draw_texture_ex};
 use macroquad::window::screen_height;
 
 pub struct Middle {
@@ -13,7 +13,7 @@ impl Middle {
         Middle { texture }
     }
 
-    pub fn render(&self, x_start: f32, x_end: f32, points: &[Vec2]) {
+    pub fn render(&self, x_start: f32, x_end: f32, points: &[Vec2], robot_size: Vec2) {
         // FIXME: wide screens
         let x = self.texture.height() / self.texture.width();
         let h = (screen_height() - (x_end - x_start) * x) / 2.0;
@@ -31,6 +31,11 @@ impl Middle {
                 pivot: None,
             },
         );
+        if points.len() != 0 {
+            for i in 0..points.len() - 1 {
+                draw_line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, robot_size.x, Color::new(0.0, 0.0, 0.0, 0.5));
+            }
+        }
         for p in points.iter() {
             draw_circle(p.x + x_start, p.y, 5.0, WHITE);
             draw_circle_lines(p.x + x_start, p.y, 5.0, 2.0, BLACK);
