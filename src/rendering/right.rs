@@ -7,14 +7,9 @@ pub struct TempInfo {
     pub resizing: bool,
 }
 
-struct Settings {
-    robot_size: Vec2,
-}
-
 pub struct Right {
     pub width: f32,
     color: Color,
-    settings: Settings,
     pub temp_info: TempInfo,
 }
 
@@ -24,7 +19,6 @@ impl Right {
         Right {
             color,
             width,
-            settings: Settings { robot_size: vec2(174.0, 160.0) },
             temp_info: TempInfo { resizing: false },
         }
     }

@@ -1,11 +1,11 @@
 use crate::utils::load_texture_safe::load_texture_safe;
 use macroquad::color::Color;
 use macroquad::input::{is_key_pressed, mouse_position};
-use macroquad::math::Vec2;
+use macroquad::math::{Vec2, vec2};
 use macroquad::prelude::{get_default_font, load_ttf_font_from_bytes};
 use macroquad::window::screen_width;
-use miniquad::window::set_fullscreen;
 use miniquad::KeyCode::F11;
+use miniquad::window::set_fullscreen;
 
 const FONT_DATA: &[u8] = include_bytes!("../../assets/font/Lexend-VariableFont_wght.ttf");
 const FIELD_TEXTURE_BYTES: &[u8] = include_bytes!("../../assets/textures/field.png");
@@ -13,6 +13,10 @@ const FIELD_TEXTURE_BYTES: &[u8] = include_bytes!("../../assets/textures/field.p
 pub mod left;
 pub mod middle;
 pub mod right;
+
+struct Settings {
+    robot_size: Vec2,
+}
 
 struct TempInfo {
     is_fullscreen: bool,
@@ -22,6 +26,7 @@ pub(crate) struct Manager {
     left: left::Left,
     pub(crate) middle: middle::Middle,
     right: right::Right,
+    settings: Settings,
     cursor: crate::utils::set_mouse_cursor::MouseCursor,
     temp_info: TempInfo,
 }
@@ -36,6 +41,7 @@ impl Manager {
             left: left::Left::new(drive_method_names, 150.0, color, font),
             middle: middle::Middle::new(load_texture_safe(FIELD_TEXTURE_BYTES)),
             right: right::Right::new(color, 300.0),
+            settings: Settings { robot_size: vec2(174.0, 160.0) },
             cursor: crate::utils::set_mouse_cursor::MouseCursor { state: miniquad::CursorIcon::Default },
             temp_info: TempInfo {
                 is_fullscreen: false,
@@ -45,7 +51,7 @@ impl Manager {
     }
 
     pub(crate) fn render(&mut self, points: &[Vec2]) {
-        self.middle.render(self.left.width, screen_width() - self.right.width, points);
+        self.middle.render(self.left.width, screen_width() - self.right.width, points, self.settings.robot_size);
         self.right.render();
         self.left.render();
     }
