@@ -15,4 +15,10 @@ categories = ["science::robotics", "simulation", "rendering::engine"]
 button_lib = "0.1.0"
 macroquad = "0.4.15"
 miniquad = "0.4.10"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 arboard = "3.6.1"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = ["Clipboard", "Window", "Navigator"] }
