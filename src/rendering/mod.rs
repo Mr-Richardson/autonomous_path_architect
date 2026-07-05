@@ -23,9 +23,9 @@ struct TempInfo {
     last_is_copy_code: bool,
 }
 pub(crate) struct Manager {
-    left: left::Left,
+    pub(crate) left: left::Left,
     pub(crate) middle: middle::Middle,
-    right: right::Right,
+    pub(crate) right: right::Right,
     settings: Settings,
     cursor: crate::utils::set_mouse_cursor::MouseCursor,
     temp_info: TempInfo,

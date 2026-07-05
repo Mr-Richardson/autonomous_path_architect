@@ -1,4 +1,5 @@
 use macroquad::color::{BLACK, Color, WHITE};
+use macroquad::input::mouse_position;
 use macroquad::math::{Vec2, vec2};
 use macroquad::shapes::{draw_circle, draw_circle_lines, draw_line};
 use macroquad::texture::{DrawTextureParams, draw_texture_ex};
@@ -46,7 +47,7 @@ impl Middle {
         middle
     }
 
-    pub fn render(&mut self, x_start: f32, x_end: f32, points: &[Vec2], robot_size: Vec2) {
+    fn update(&mut self, x_start: f32, x_end: f32) {
         let x: f32;
         let y: f32;
         let w: f32;
@@ -57,7 +58,6 @@ impl Middle {
             last_screen_height: screen_height(),
         };
         if self.temp_info.last_dimensions != dimensions {
-            println!("refresh");
             let x_diff: f32 = x_end - x_start;
             if self.temp_info.aspect_ratio < screen_height() / x_diff {
                 x = x_start;
@@ -75,19 +75,18 @@ impl Middle {
             self.temp_info.w = w;
             self.temp_info.h = h;
             self.temp_info.last_dimensions = dimensions;
-        } else {
-            x = self.temp_info.x;
-            y = self.temp_info.y;
-            w = self.temp_info.w;
-            h = self.temp_info.h;
         }
+    }
+
+    pub fn render(&mut self, x_start: f32, x_end: f32, points: &[Vec2], robot_size: Vec2) {
+        self.update(x_start, x_end);
         draw_texture_ex(
             &self.texture,
-            x,
-            y,
+            self.temp_info.x,
+            self.temp_info.y,
             WHITE,
             DrawTextureParams {
-                dest_size: Some(vec2(w, h)),
+                dest_size: Some(vec2(self.temp_info.w, self.temp_info.h)),
                 source: None,
                 rotation: 0.0,
                 flip_x: false,
@@ -101,8 +100,18 @@ impl Middle {
             }
         }
         for p in points.iter() {
-            draw_circle(p.x + x_start, p.y, 5.0, WHITE);
-            draw_circle_lines(p.x + x_start, p.y, 5.0, 2.0, BLACK);
+            let x = p.x * self.temp_info.w + self.temp_info.x;
+            let y = p.y * self.temp_info.w + self.temp_info.y;
+            draw_circle(x, y, 5.0, WHITE);
+            draw_circle_lines(x, y, 5.0, 2.0, BLACK);
         }
+    }
+
+    pub fn point_set_check(&mut self, mut points: Vec<Vec2>, x_start: f32, x_end: f32) -> Vec<Vec2> {
+        self.update(x_start, x_end);
+        if mouse_position().0 > self.temp_info.x && self.temp_info.x + self.temp_info.w > mouse_position().0 && mouse_position().1 > self.temp_info.y && self.temp_info.y + self.temp_info.h > mouse_position().1 {
+            points.push(vec2((mouse_position().0 - self.temp_info.x) / self.temp_info.w, ((mouse_position().1) - self.temp_info.y) / self.temp_info.w))
+        }
+        points
     }
 }
