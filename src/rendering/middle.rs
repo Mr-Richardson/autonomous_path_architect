@@ -1,7 +1,7 @@
-use macroquad::color::{Color, BLACK, WHITE};
-use macroquad::math::{vec2, Vec2};
+use macroquad::color::{BLACK, Color, WHITE};
+use macroquad::math::{Vec2, vec2};
 use macroquad::shapes::{draw_circle, draw_circle_lines, draw_line};
-use macroquad::texture::{draw_texture_ex, DrawTextureParams};
+use macroquad::texture::{DrawTextureParams, draw_texture_ex};
 use macroquad::window::screen_height;
 
 pub struct Middle {
@@ -10,8 +10,7 @@ pub struct Middle {
 }
 
 struct TempInfo {
-    last_x_start: f32,
-    last_x_end: f32,
+    last_dimensions: LastDimensions,
     x: f32,
     y: f32,
     w: f32,
@@ -19,13 +18,23 @@ struct TempInfo {
     aspect_ratio: f32,
 }
 
+#[derive(PartialEq)]
+struct LastDimensions {
+    last_x_start: f32,
+    last_x_end: f32,
+    last_screen_height: f32,
+}
+
 impl Middle {
     pub fn new(texture: macroquad::texture::Texture2D) -> Self {
         let mut middle = Middle {
             texture,
             temp_info: TempInfo {
-                last_x_start: 0.0,
-                last_x_end: 0.0,
+                last_dimensions: LastDimensions {
+                    last_x_start: 0.0,
+                    last_x_end: 0.0,
+                    last_screen_height: 0.0,
+                },
                 x: 0.0,
                 y: 0.0,
                 w: 0.0,
@@ -37,22 +46,40 @@ impl Middle {
         middle
     }
 
-    pub fn render(&self, x_start: f32, x_end: f32, points: &[Vec2], robot_size: Vec2) {
+    pub fn render(&mut self, x_start: f32, x_end: f32, points: &[Vec2], robot_size: Vec2) {
         let x: f32;
         let y: f32;
         let w: f32;
         let h: f32;
-        let x_diff: f32 = x_end - x_start;
-        if self.temp_info.aspect_ratio < screen_height() / x_diff {
-            x = x_start;
-            w = x_diff;
-            h = x_diff * self.temp_info.aspect_ratio;
-            y = (screen_height() - h) / 2.0;
+        let dimensions = LastDimensions {
+            last_x_start: x_start,
+            last_x_end: x_end,
+            last_screen_height: screen_height(),
+        };
+        if self.temp_info.last_dimensions != dimensions {
+            println!("refresh");
+            let x_diff: f32 = x_end - x_start;
+            if self.temp_info.aspect_ratio < screen_height() / x_diff {
+                x = x_start;
+                w = x_diff;
+                h = x_diff * self.temp_info.aspect_ratio;
+                y = (screen_height() - h) / 2.0;
+            } else {
+                y = 0.0;
+                h = screen_height();
+                w = screen_height() / self.temp_info.aspect_ratio;
+                x = x_start + (x_diff - w) / 2.0;
+            }
+            self.temp_info.x = x;
+            self.temp_info.y = y;
+            self.temp_info.w = w;
+            self.temp_info.h = h;
+            self.temp_info.last_dimensions = dimensions;
         } else {
-            y = 0.0;
-            h = screen_height();
-            w = screen_height() / self.temp_info.aspect_ratio;
-            x = x_start + (x_diff - w) / 2.0;
+            x = self.temp_info.x;
+            y = self.temp_info.y;
+            w = self.temp_info.w;
+            h = self.temp_info.h;
         }
         draw_texture_ex(
             &self.texture,
