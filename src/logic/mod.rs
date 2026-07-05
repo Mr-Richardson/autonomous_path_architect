@@ -28,6 +28,6 @@ impl Manager {
             eprintln!("Error generating code: {}", e);
             "Select more points".to_string()
         });
-        self.clipboard.set_text(code).expect("TODO: panic message");
+        self.clipboard.set_text(code).expect("TODO: panic message"); // TODO: fix for web
     }
 }
