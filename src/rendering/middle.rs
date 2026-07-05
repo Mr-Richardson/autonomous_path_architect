@@ -38,10 +38,10 @@ impl Middle {
     }
 
     pub fn render(&self, x_start: f32, x_end: f32, points: &[Vec2], robot_size: Vec2) {
-        let mut x: f32;
-        let mut y: f32;
-        let mut w: f32;
-        let mut h: f32;
+        let x: f32;
+        let y: f32;
+        let w: f32;
+        let h: f32;
         let x_diff: f32 = x_end - x_start;
         if self.temp_info.aspect_ratio < screen_height() / x_diff {
             x = x_start;
