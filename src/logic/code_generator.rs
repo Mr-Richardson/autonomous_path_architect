@@ -13,13 +13,13 @@ pub fn generate(points: &[Vec2]) -> Result<String, String> {
         let distance = points[i].distance(points[i + 1]);
         let angle = (points[i + 1] - points[i]).angle_between(points[i + 2] - points[i + 1]).to_degrees();
         if angle.is_nan() {
-            write!(code, "    await drive.straight({:.2})\n", distance).expect(error_message);
+            writeln!(code, "    await drive.straight({:.2})", distance).expect(error_message);
         } else {
-            write!(code, "    await drive.straight_and_turn({:.2}, {:.2})\n", distance, angle).expect(error_message);
+            writeln!(code, "    await drive.straight_and_turn({:.2}, {:.2})", distance, angle).expect(error_message);
         }
     }
     let distance = points[points.len() - 2].distance(*points.last().unwrap());
-    write!(code, "    await drive.straight({:.2})\n\nrun_task(template())\n", distance).expect(error_message);
+    writeln!(code, "    await drive.straight({:.2})\n\nrun_task(template())", distance).expect(error_message);
     Ok(code)
 }
 

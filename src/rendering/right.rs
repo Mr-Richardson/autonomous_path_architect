@@ -1,6 +1,5 @@
 use macroquad::color::Color;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_position};
-use macroquad::math::{Vec2, vec2};
 use macroquad::prelude::{draw_rectangle, screen_height, screen_width};
 
 pub struct TempInfo {

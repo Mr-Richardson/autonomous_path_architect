@@ -24,7 +24,7 @@ impl Manager {
         for point in &self.points {
             coordinates.push(point.mul(self.field_width))
         }
-        let code = code_generator::generate(&*self.points).unwrap_or_else(|e| {
+        let code = code_generator::generate(&self.points).unwrap_or_else(|e| {
             // TODO: error handling
             eprintln!("Error generating code: {}", e);
             "Select more points".to_string()

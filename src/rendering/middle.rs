@@ -94,7 +94,7 @@ impl Middle {
                 pivot: None,
             },
         );
-        if points.len() != 0 {
+        if !points.is_empty() {
             for i in 0..points.len() - 1 {
                 draw_line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, robot_size.x, Color::new(0.0, 0.0, 0.0, 0.5));
             }
