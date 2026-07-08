@@ -7,7 +7,7 @@ pub fn generate(points: &[Vec2]) -> Result<String, String> {
         return Err("Not enough points to generate code (need at least 2).".to_string());
     }
     let error_message = "The code generation failed. `write!` panicked!!!";
-    let mut code: String = "from library import *\n\nasync def main():".to_string();
+    let mut code: String = "from core.drive import Drive\nfrom core.gear import Gear\n\n\nasync def main(drive: Drive, shafts: tuple[Gear, Gear, Gear, Gear]):\n".to_string();
     for i in 0..points.len() - 2 {
         let distance = points[i].distance(points[i + 1]);
         let angle = (points[i + 1] - points[i]).angle_between(points[i + 2] - points[i + 1]).to_degrees();
@@ -17,8 +17,8 @@ pub fn generate(points: &[Vec2]) -> Result<String, String> {
             writeln!(code, "    await drive.straight_and_turn({:.2}, {:.2})", distance, angle).expect(error_message);
         }
     }
-    let distance = points[points.len() - 2].distance(*points.last().unwrap());
-    writeln!(code, "    await drive.straight({:.2})\n\nrun_task(template())", distance).expect(error_message);
+    let distance = points[points.len() - 2].distance(*points.last().unwrap()) as i32;
+    writeln!(code, "    await drive.straight({})", distance).expect(error_message);
     Ok(code)
 }
 
