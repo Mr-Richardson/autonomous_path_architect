@@ -1,3 +1,4 @@
+use crate::rendering::left::PressedButton::Straight;
 use button_lib::button::Button;
 use button_lib::button::Shape::{Ellipse, Rectangle};
 use button_lib::button::State::{Disabled, Hovered, Idle, Pressed};
@@ -6,6 +7,14 @@ use macroquad::input::{is_mouse_button_down, is_mouse_button_pressed, mouse_posi
 use macroquad::math::vec2;
 use macroquad::prelude::{Font, screen_height};
 use macroquad::shapes::draw_rectangle;
+
+#[derive(PartialEq)]
+pub enum PressedButton {
+    None,
+    Straight,
+    // Arc,
+    // UntilBlack,
+}
 
 #[derive(PartialEq)]
 struct LastSize {
@@ -23,6 +32,7 @@ pub struct Left {
     pub width: f32,
     color: Color,
     buttons: Vec<Button>,
+    pub pressed_button: PressedButton,
     pub temp_info: TempInfo,
 }
 
@@ -66,6 +76,7 @@ impl Left {
             buttons,
             width,
             color,
+            pressed_button: PressedButton::None,
             temp_info: TempInfo {
                 resizing: false,
                 last_size: LastSize {
@@ -110,8 +121,12 @@ impl Left {
                 if i != new_size.size_multi.len() - 1 {
                     if new_size.size_multi[i] == 1.45 {
                         b.set_color(RED);
+                        if i == 0 {
+                            self.pressed_button = Straight;
+                        }
                     } else {
                         b.set_color(WHITE);
+                        self.pressed_button = PressedButton::None;
                     }
                 }
             }
