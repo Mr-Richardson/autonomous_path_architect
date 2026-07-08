@@ -7,8 +7,7 @@ pub fn generate(points: &[Vec2]) -> Result<String, String> {
         return Err("Not enough points to generate code (need at least 2).".to_string());
     }
     let error_message = "The code generation failed. `write!` panicked!!!";
-    let turn = (points[1] - *points.first().unwrap()).to_angle().to_degrees();
-    let mut code: String = format!("from library import *\n\nasync def main():\n    await drive.turn({:.2})\n", turn);
+    let mut code: String = "from library import *\n\nasync def main():".to_string();
     for i in 0..points.len() - 2 {
         let distance = points[i].distance(points[i + 1]);
         let angle = (points[i + 1] - points[i]).angle_between(points[i + 2] - points[i + 1]).to_degrees();
