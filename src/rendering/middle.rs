@@ -107,11 +107,10 @@ impl Middle {
         }
     }
 
-    pub fn point_set_check(&mut self, mut points: Vec<Vec2>, x_start: f32, x_end: f32) -> Vec<Vec2> {
+    pub fn point_set_check(&mut self, points: &mut Vec<Vec2>, x_start: f32, x_end: f32) {
         self.update(x_start, x_end);
         if mouse_position().0 > self.temp_info.x && self.temp_info.x + self.temp_info.w > mouse_position().0 && mouse_position().1 > self.temp_info.y && self.temp_info.y + self.temp_info.h > mouse_position().1 {
             points.push(vec2((mouse_position().0 - self.temp_info.x) / self.temp_info.w, ((mouse_position().1) - self.temp_info.y) / self.temp_info.w))
         }
-        points
     }
 }

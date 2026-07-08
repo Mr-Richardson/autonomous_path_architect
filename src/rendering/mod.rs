@@ -1,10 +1,12 @@
+use crate::rendering::left::PressedButton::Straight;
 use crate::utils::load_texture_safe::load_texture_safe;
 use macroquad::color::Color;
-use macroquad::input::{is_key_pressed, mouse_position};
+use macroquad::input::{is_key_pressed, is_mouse_button_pressed, mouse_position};
 use macroquad::math::{Vec2, vec2};
 use macroquad::prelude::{get_default_font, load_ttf_font_from_bytes};
 use macroquad::window::screen_width;
 use miniquad::KeyCode::F11;
+use miniquad::MouseButton::Left;
 use miniquad::window::set_fullscreen;
 
 const FONT_DATA: &[u8] = include_bytes!("../../assets/font/Lexend-VariableFont_wght.ttf");
@@ -86,6 +88,12 @@ impl Manager {
                 self.temp_info.last_is_copy_code = false;
             }
             false
+        }
+    }
+
+    pub fn point_set_check(&mut self, points: &mut Vec<Vec2>) {
+        if is_mouse_button_pressed(Left) && self.left.pressed_button == Straight {
+            self.middle.point_set_check(points, self.left.width, screen_width() - self.right.width);
         }
     }
 }
