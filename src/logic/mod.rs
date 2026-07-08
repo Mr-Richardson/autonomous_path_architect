@@ -22,7 +22,7 @@ impl Manager {
     pub(crate) fn copy_code(&mut self) {
         let mut coordinates = Vec::with_capacity(self.points.len());
         for point in &self.points {
-            coordinates.push(point.mul(self.field_width))
+            coordinates.push(point * self.field_width)
         }
         let code = code_generator::generate(&self.points).unwrap_or_else(|e| {
             // TODO: error handling
