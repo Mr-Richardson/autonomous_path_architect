@@ -20,7 +20,7 @@ pub enum PressedButton {
 struct LastSize {
     width: f32,
     height: f32,
-    size_multi: Vec<f32>,
+    size_multi: Vec<f32>, // TODO: use array
 }
 
 pub struct TempInfo {
@@ -31,7 +31,7 @@ pub struct TempInfo {
 pub struct Left {
     pub width: f32,
     color: Color,
-    buttons: Vec<Button>,
+    buttons: Vec<Button>, // TODO: use array and seperate from copy and reset button
     pub pressed_button: PressedButton,
     pub temp_info: TempInfo,
 }

@@ -18,6 +18,7 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
+    // TODO: VS Code extension
     let mut rendering: rendering::Manager = rendering::Manager::new(vec!["straight".to_string()], Color::new(0.1, 0.1, 0.1, 1.0)); //, "arc".to_string(), "until black".to_string()], Color::new(0.1, 0.1, 0.1, 1.0));
     let mut logic: logic::Manager = logic::Manager::new(3045.0579);
     loop {
