@@ -10,7 +10,7 @@ pub fn generate(points: &[Vec2]) -> Result<String, &str> {
     let mut code: String = "from core.drive import Drive\nfrom core.gear import Gear\n\n\nasync def main(drive: Drive, shafts: tuple[Gear, Gear, Gear, Gear]):\n".to_string();
     for i in 0..points.len() - 2 {
         let distance = points[i].distance(points[i + 1]) as i32;
-        let angle = (points[i + 1] - points[i]).angle_between(points[i + 2] - points[i + 1]).to_degrees();
+        let angle = (points[i + 1] - points[i]).angle_to(points[i + 2] - points[i + 1]).to_degrees();
         if angle.is_nan() {
             writeln!(code, "    await drive.straight({})", distance).expect(error_message);
         } else {
