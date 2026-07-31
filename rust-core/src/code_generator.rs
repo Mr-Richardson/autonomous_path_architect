@@ -1,4 +1,4 @@
-use macroquad::math::Vec2;
+use glam::Vec2;
 use std::fmt::Write;
 
 /// Convert the coordinates of the points on the field in mm to Python code

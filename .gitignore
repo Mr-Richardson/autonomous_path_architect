@@ -1,4 +1,7 @@
-target/
-.idea/
-autonomous_path_architect.iml
-.vscode/
+out
+dist
+node_modules
+.vscode-test/
+.vscode
+*.vsix
+rust-core/target
