@@ -2,9 +2,9 @@ use glam::Vec2;
 use std::fmt::Write;
 
 /// Convert the coordinates of the points on the field in mm to Python code
-pub fn generate(points: &[Vec2]) -> Result<String, String> {
+pub fn generate(points: &[Vec2]) -> Result<String, &str> {
     if points.len() < 2 {
-        return Err("Not enough points to generate code (need at least 2).".to_string());
+        return Err("Not enough points to generate code (need at least 2).");
     }
     let error_message = "The code generation failed. `write!` panicked!!!";
     let mut code: String = "from core.drive import Drive\nfrom core.gear import Gear\n\n\nasync def main(drive: Drive, shafts: tuple[Gear, Gear, Gear, Gear]):\n".to_string();
