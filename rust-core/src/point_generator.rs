@@ -1,4 +1,4 @@
-use macroquad::math::Vec2;
+use glam::Vec2;
 
 pub fn generate(code: &str) -> Vec<Vec2> {
     let lines = code.lines().skip_while(|line| !line.contains("async def main(")).skip(1).take_while(|line| line.contains("    ")).collect::<Vec<&str>>();
@@ -11,7 +11,6 @@ pub fn generate(code: &str) -> Vec<Vec2> {
 mod tests {
     // TODO: better tests
     use super::*;
-    use macroquad::prelude::vec2;
     #[test]
     fn test_point_generation() {
         print!(
