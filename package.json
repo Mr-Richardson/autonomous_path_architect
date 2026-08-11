@@ -12,7 +12,29 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "apaActivityBar",
+          "title": "APA",
+          "icon": "assets/textures/apa_icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "apaActivityBar": [
+        {
+          "id": "apaSidebarView",
+          "name": "Path Architect",
+          "icon": "assets/textures/apa_icon.svg"
+        }
+      ]
+    },
     "commands": [
+      {
+        "command": "autonomous-path-architect.openPanel",
+        "title": "APA: Open Panel"
+      },
       {
         "command": "autonomous-path-architect.reload",
         "title": "APA: Reload"
